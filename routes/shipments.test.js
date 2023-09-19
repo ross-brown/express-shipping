@@ -33,5 +33,17 @@ describe("POST /", function () {
         discount: 100000
       });
     expect(resp.statusCode).toEqual(400);
+    expect(resp.body).toEqual({
+      "error": {
+        "message": [
+          "instance.productId is not of a type(s) number",
+          "instance.name is not of a type(s) string",
+          "instance.addr is not of a type(s) string",
+          "instance is not allowed to have the additional property \"discount\"",
+          "instance requires property \"zip\""
+        ],
+        "status": 400
+      }
+    });
   });
 });
