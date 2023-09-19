@@ -8,6 +8,10 @@ test("shipProduct", async function () {
   fetchMock.post(SHIPIT_SHIP_URL, {
     body: {
       receipt: {
+        itemId: 1000,
+        name: "Test Tester",
+        addr: "100 Test St",
+        zip: "12345-6789",
         shipId: 1234
       }
     },
