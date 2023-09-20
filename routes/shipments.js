@@ -7,7 +7,7 @@ const multiShipmentSchema = require("../schemas/multiShipmentSchema.json");
 const { BadRequestError } = require("../expressError");
 const router = new express.Router();
 
-const { shipProduct } = require("../shipItApi");
+const { shipProduct, shipProducts } = require("../shipItApi");
 
 /** POST /
  *
@@ -49,15 +49,9 @@ router.post("/multi", async function (req, res, next) {
     throw new BadRequestError(errs);
   }
 
-  const { productIds, name, addr, zip } = req.body;
-
-  const shipPromises = productIds.map(productId =>
-    shipProduct({ productId, name, addr, zip }));
-
-  const shipIds = await Promise.all(shipPromises);
+  const shipIds = await shipProducts(req.body)
 
   return res.json({ shipped: shipIds });
-
 });
 
 

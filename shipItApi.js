@@ -11,7 +11,7 @@ const SHIPIT_API_KEY = "SUPER-DUPER-SECRET";
 async function shipProduct({ productId, name, addr, zip }) {
   console.warn("Called our real shipProduct function");
 
-  const response = await fetch(SHIPIT_SHIP_URL,{
+  const response = await fetch(SHIPIT_SHIP_URL, {
     method: "POST",
     body: JSON.stringify({
       itemId: productId,
@@ -20,7 +20,7 @@ async function shipProduct({ productId, name, addr, zip }) {
       zip,
       key: SHIPIT_API_KEY,
     }),
-    headers:{
+    headers: {
       "content-type": "application/json"
     }
   });
@@ -30,4 +30,17 @@ async function shipProduct({ productId, name, addr, zip }) {
   return shipData.receipt.shipId;
 }
 
-module.exports = { shipProduct };
+
+/** Ship multiple products through the shipit API.
+ *
+ * Returns an array of shipIds from shipit.
+ */
+
+async function shipProducts({ productIds, name, addr, zip }) {
+  const shipPromises = productIds.map(productId =>
+    shipProduct({ productId, name, addr, zip }));
+
+  return await Promise.all(shipPromises);
+}
+
+module.exports = { shipProduct, shipProducts };

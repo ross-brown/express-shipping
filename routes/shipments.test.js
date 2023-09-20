@@ -2,6 +2,7 @@
 
 const shipItApi = require("../shipItApi");
 shipItApi.shipProduct = jest.fn();
+shipItApi.shipProducts = jest.fn();
 
 const request = require("supertest");
 const app = require("../app");
@@ -58,17 +59,17 @@ describe("POST /", function () {
 
 describe("POST /multi", function () {
   test("valid", async function () {
-    shipItApi.shipProduct.mockReturnValue(1234);
+    shipItApi.shipProducts.mockReturnValue([1234, 1234]);
 
     const resp = await request(app).post("/shipments/multi").send({
-      productIds: [1000, 1002, 1003, 1004],
+      productIds: [1000, 1002],
       name: "Test Tester",
       addr: "1234 Davis Lane",
       zip: "12345"
     });
 
     expect(resp.statusCode).toEqual(200);
-    expect(resp.body).toEqual({ shipped: [1234, 1234, 1234, 1234] });
+    expect(resp.body).toEqual({ shipped: [1234, 1234] });
   });
 
   test("throws error if empty request body", async function () {
