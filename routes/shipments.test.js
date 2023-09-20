@@ -82,7 +82,7 @@ describe("POST /multi", function () {
     const resp = await request(app)
       .post("/shipments/multi")
       .send({
-        productIds: ['1234', '1234', 'WRONG'],
+        productIds: ['1234', '1234', 12],
         name: 1234,
         addr: false,
         discount: 100000,
@@ -94,7 +94,7 @@ describe("POST /multi", function () {
         "message": [
           "instance.productIds[0] is not of a type(s) number",
           "instance.productIds[1] is not of a type(s) number",
-          "instance.productIds[2] is not of a type(s) number",
+          "instance.productIds[2] must be greater than or equal to 1000",
           "instance.name is not of a type(s) string",
           "instance.addr is not of a type(s) string",
           "instance.zip does not match pattern \"^\\\\d{5}(?:[-\\\\s]\\\\d{4})?$\"",
